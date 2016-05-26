@@ -17,10 +17,7 @@ var Todo = React.createClass({
         this.setState({ data: todos.concat([todo]) })
     },
     handleCheckChange: function (id) {
-        console.log(id)
-        console.log(this)
         var state = this.state.data.map((todo) => {
-            console.log('map',id,todo);
             return Object.assign(todo, {checked: todo.id === id ? !todo.checked : todo.checked})
         })
         this.setState({ data: state })

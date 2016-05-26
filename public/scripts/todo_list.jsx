@@ -23,8 +23,11 @@ var TodoList = React.createClass({
       this.props.onCheckChange(id)  
     },
     render: function () {
+        console.log('====== Active Todo ======')
         var todoNodes = this.props.data.map((todo) => {
-            console.log(todo)
+            if(todo.checked) {
+                console.log('active', todo.text)
+            }
             return (
                 <Todo key={todo.id} id={todo.id} selected={todo.checked} onCheckChange={this.handleCheckChange}>
                     {todo.text}
