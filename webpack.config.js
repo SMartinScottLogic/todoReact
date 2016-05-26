@@ -51,7 +51,7 @@ let options = {
     },
     entry: [
         
-        './public/scripts/tutorial21_commentbox.jsx'
+        './public/scripts/todo.jsx'
     ],
     devtool: 'source-map',
 };
