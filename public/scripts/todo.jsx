@@ -3,24 +3,76 @@ var TodoList = require('./todo_list.jsx')
 
 var Todo = React.createClass({
     getInitialState: function () {
-        return {
-            data: [
-                { id:1, text: 'test1', checked: true }
-                , { id:2, text: 'test2', checked: false }
-                , { id:3, text: 'test4', checked: true }
-            ]
-        }
+        return { data: [] }
     },
     handleTodoSubmit: function (todo) {
         var todos = this.state.data
         todo.id = Date.now()
         this.setState({ data: todos.concat([todo]) })
+        this.sendNewTodoToServer(todo)
     },
     handleCheckChange: function (id) {
+        console.log('change', id, this.state.data);
         var state = this.state.data.map((todo) => {
-            return Object.assign(todo, {checked: todo.id === id ? !todo.checked : todo.checked})
+            if( todo.id === id) {
+                todo.checked = !todo.checked
+            } else {
+                todo.checked = !!todo.checked
+            }
+            return todo
         })
         this.setState({ data: state })
+        state.filter( (todo) => todo.id === id).forEach( this.updateTodoOnServer )
+    },
+    loadTodosFromServer: function () {
+        console.log('server', 'todos')
+        $.ajax({
+            url: this.props.url,
+            dataType: 'json',
+            type: 'GET',
+            cache: false,
+            success: function (data) {
+                this.setState({ data })
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.error(this.props.url, status, err.toString())
+            }.bind(this)
+        })
+    },
+    updateTodoOnServer: function(todo) {
+      $.ajax({
+            url: this.props.url,
+            dataType: 'json',
+            headers: { "Content-Type": "application/json"},
+            type: 'PUT',
+            data: JSON.stringify(todo),
+            cache: false,
+            success: function (data) {
+                //this.setState({ data })
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.error(this.props.url, status, err.toString())
+            }.bind(this)
+        })
+    },
+    sendNewTodoToServer: function (todo) {
+        $.ajax({
+            url: this.props.url,
+            dataType: 'json',
+            type: 'POST',
+            data: todo,
+            cache: false,
+            success: function (data) {
+                this.setState({ data })
+            }.bind(this),
+            error: function (xhr, status, err) {
+                console.error(this.props.url, status, err.toString())
+            }.bind(this)
+        })
+    },
+    componentDidMount: function () {
+        this.loadTodosFromServer()
+        setInterval(this.loadTodosFromServer, this.props.pollInterval || 500000)
     },
     render: function () {
         return (
@@ -33,6 +85,6 @@ var Todo = React.createClass({
 })
 
 ReactDOM.render(
-    <Todo />,
+    <Todo url="/api/todos"/>,
     document.getElementById('content')
 );
