@@ -1,4 +1,6 @@
-var TodoForm = React.createClass({
+import {h} from 'react-markup'
+
+const TodoForm = React.createClass({
     getInitialState: function () {
         return { checked: false, text: '' };
     },
@@ -15,10 +17,10 @@ var TodoForm = React.createClass({
     },
     render: function () {
         return (
-            <form className="todoForm" onSubmit={this.handleSubmit}>
-                <input type="text" placeholder="Task description" value={this.state.text} onChange={this.handleTextChange} />
-                <input type="submit" value="Post" />
-            </form>
+            h('form.todoForm', {onSubmit:this.handleSubmit},
+                h('input', {type:"text", placeholder:"Task description", value:this.state.text, onChange: this.handleTextChange}),
+                h('input', {type:"submit", value:"Post"})
+            )
         )
     }
 })

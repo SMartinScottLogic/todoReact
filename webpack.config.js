@@ -12,36 +12,10 @@ let options = {
     module: {
         loaders: [
             {
-                test: /\.js(x?)$/,
+                test: /\.js$/,
                 loader: 'babel-loader',
-                include: path.resolve(__dirname, "public/scripts"),
+                include: path.resolve(__dirname, "public/todo"),
                 query: { presets: ['react','es2015'] }
-            },
-            {
-                test: /\.ts(x?)$/,
-                loader: 'babel-loader!ts-loader',
-                include: path.resolve(__dirname, "public/scripts"),
-                query: { presets: ['es2015'] }
-            },
-            {
-                test: /\.html$/,
-                loader: 'html',
-                include: path.resolve(__dirname, "public/")
-            },
-            {
-                test: /\.scss$/,
-                loaders: ['style', 'css', 'sass'],
-                include: path.resolve(__dirname, "public/scripts")
-            },
-            {
-                test: /\.css$/,
-                loader: "style-loader!css-loader",
-                include: path.resolve(__dirname, "public/css")
-            },
-            {
-                test: /\.scss$/,
-                loaders: ['style', 'css', 'sass'],
-                include: path.resolve(__dirname, "public/css")
             }
         ]
     },
@@ -51,7 +25,7 @@ let options = {
     },
     entry: [
         
-        './public/scripts/todo.jsx'
+        './public/todo/todo.js'
     ],
     devtool: 'source-map',
 };

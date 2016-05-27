@@ -1,4 +1,6 @@
-var Todo = React.createClass({
+import {h} from 'react-markup'
+
+const Todo = React.createClass({
     getInitialState: function() {
         return {
             checked: this.props.selected || false
@@ -10,15 +12,15 @@ var Todo = React.createClass({
     },
     render: function () {
         return (
-            <div className="todo">
-                <input type="checkbox" value={this.props.id} checked={this.state.checked} onChange={this.handleCheckChange}/>
-                <span>{this.props.children}</span>
-            </div>
+            h('div.todo',
+                h('input', {type:"checkbox", value:this.props.id, checked:this.state.checked,onChange:this.handleCheckChange}),
+                h('span', this.props.children)
+            )
         )
     }
 })
 
-var TodoList = React.createClass({
+const TodoList = React.createClass({
     handleCheckChange: function(id) {
       this.props.onCheckChange(id)  
     },
@@ -29,15 +31,15 @@ var TodoList = React.createClass({
                 console.log('active', todo.text)
             }
             return (
-                <Todo key={todo.id} id={todo.id} selected={todo.checked} onCheckChange={this.handleCheckChange}>
-                    {todo.text}
-                </Todo>
+                h(Todo, {key:todo.id,id:todo.id, selected:todo.checked, onCheckChange:this.handleCheckChange},
+                    todo.text
+                )
             )
         })
         return (
-            <div className="todoList">
-                {todoNodes}
-            </div>
+            h('div.todoList',
+                todoNodes
+            )
         )
     }
 })

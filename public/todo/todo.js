@@ -1,7 +1,10 @@
-var TodoForm = require('./todo_form.jsx')
-var TodoList = require('./todo_list.jsx')
+'use strict';
 
-var Todo = React.createClass({
+import {h} from 'react-markup'
+const TodoForm = require('./todo_form.js')
+const TodoList = require('./todo_list.js')
+
+const Todo = React.createClass({
     getInitialState: function () {
         return { data: [] }
     },
@@ -14,7 +17,7 @@ var Todo = React.createClass({
     handleCheckChange: function (id) {
         console.log('change', id, this.state.data);
         var state = this.state.data.map((todo) => {
-            if( todo.id === id) {
+            if (todo.id === id) {
                 todo.checked = !todo.checked
             } else {
                 todo.checked = !!todo.checked
@@ -22,7 +25,7 @@ var Todo = React.createClass({
             return todo
         })
         this.setState({ data: state })
-        state.filter( (todo) => todo.id === id).forEach( this.updateTodoOnServer )
+        state.filter((todo) => todo.id === id).forEach(this.updateTodoOnServer)
     },
     loadTodosFromServer: function () {
         console.log('server', 'todos')
@@ -39,11 +42,11 @@ var Todo = React.createClass({
             }
         })
     },
-    updateTodoOnServer: function(todo) {
-      $.ajax({
+    updateTodoOnServer: function (todo) {
+        $.ajax({
             url: this.props.url,
             dataType: 'json',
-            headers: { "Content-Type": "application/json"},
+            headers: { "Content-Type": "application/json" },
             type: 'PUT',
             data: JSON.stringify(todo),
             cache: false,
@@ -76,15 +79,15 @@ var Todo = React.createClass({
     },
     render: function () {
         return (
-            <div>
-                <TodoList data={this.state.data} onCheckChange={this.handleCheckChange}/>
-                <TodoForm onSubmit={this.handleTodoSubmit}/>
-            </div>
+            h("div",
+                h(TodoList, { data: this.state.data, onCheckChange: this.handleCheckChange }),
+                h(TodoForm, {onSubmit: this.handleTodoSubmit })
+            )
         )
     }
 })
 
 ReactDOM.render(
-    <Todo url="/api/todos"/>,
+    h(Todo, {url:"/api/todos"},'Hello'),
     document.getElementById('content')
 );
