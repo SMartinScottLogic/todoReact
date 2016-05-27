@@ -31,12 +31,12 @@ var Todo = React.createClass({
             dataType: 'json',
             type: 'GET',
             cache: false,
-            success: function (data) {
+            success: (data) => {
                 this.setState({ data })
-            }.bind(this),
-            error: function (xhr, status, err) {
+            },
+            error: (xhr, status, err) => {
                 console.error(this.props.url, status, err.toString())
-            }.bind(this)
+            }
         })
     },
     updateTodoOnServer: function(todo) {
@@ -47,12 +47,12 @@ var Todo = React.createClass({
             type: 'PUT',
             data: JSON.stringify(todo),
             cache: false,
-            success: function (data) {
+            success: (data) => {
                 //this.setState({ data })
-            }.bind(this),
-            error: function (xhr, status, err) {
+            },
+            error: (xhr, status, err) => {
                 console.error(this.props.url, status, err.toString())
-            }.bind(this)
+            }
         })
     },
     sendNewTodoToServer: function (todo) {
@@ -62,12 +62,12 @@ var Todo = React.createClass({
             type: 'POST',
             data: todo,
             cache: false,
-            success: function (data) {
+            success: (data) => {
                 this.setState({ data })
-            }.bind(this),
-            error: function (xhr, status, err) {
+            },
+            error: (xhr, status, err) => {
                 console.error(this.props.url, status, err.toString())
-            }.bind(this)
+            }
         })
     },
     componentDidMount: function () {
